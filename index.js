@@ -44,6 +44,6 @@ micro_manager.use(usroutes);
 micro_manager.use(msroutes);
 // micro_manager.use(grroutes);
 
-micro_manager.listen(5000, () => {
+micro_manager.listen(process.env.PORT || 5000, () => {
   console.log("Listening at port 5000");
 });
