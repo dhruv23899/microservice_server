@@ -32,8 +32,9 @@ micro_manager.post("/addmicro", (req, res) => {
   let documentation = req.body.documentation;
   let code_snippet = req.body.code_snippet;
   let tech_stack_string = req.body.tech_stack;
+  let developer = req.body.developer
   let tech_stack=tech_stack_string.split(",")
-  var ms = { title:title , desc:desc , keywords:keywords, documentation:documentation, code_snippet:code_snippet, tech_stack:tech_stack,srch_util:srch_util}
+  var ms = { title:title , desc:desc , keywords:keywords, documentation:documentation, code_snippet:code_snippet, tech_stack:tech_stack,srch_util:srch_util,developer:developer}
   // micro_obj = new Micro_Schema({micro_name: micro_name,
   //     micro_desc: micro_desc});
   // micro_obj.save(err=>{
@@ -52,7 +53,7 @@ micro_manager.post("/addmicro", (req, res) => {
       } else {
         console.log(micro);
         console.log("Microservice saved successfully");
-        res.send({status:true});
+        res.send({status:true,micro:micro});
       }
     }
   );
@@ -176,8 +177,8 @@ micro_manager.post("/add_individual_request", (req, res) => {
   let desc = req.body.desc;
   let owner = req.body.owner;
   let micro_id=req.body.ms_id
-  
-  
+
+
   Individual_Request_Schema_MS.create({title:title , desc:desc,owner:owner,micro_id:micro_id},function(err, micro) {
       if (err) {
         console.log(err);
