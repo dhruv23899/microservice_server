@@ -1,10 +1,16 @@
 var mongoose = require("mongoose");
 var passportLocalMongoose = require("passport-local-mongoose");
-var {Micro_Frontend_Schema} = require ("./micro_frontend_schema.js")
+//"passport-local-mongoose" used for authentication
+// Refer this link for more details: https://www.npmjs.com/package/passport-local-mongoose
+// One can use Cookie-manager or similar packages instead of "passport-local-mongoose" which are comparitively easier.
+// Cookie-manager: https://www.npmjs.com/package/cookie-manager
 
+var {Micro_Frontend_Schema} = require ("./micro_frontend_schema.js")
+// Imports Schema from "micro_frontend_schema.js"
 
 var Schema = mongoose.Schema;
 
+// Creates Schema with required attributes and data types
 var Micro_Schema = new Schema({
   title: { type: String, required: true, unique: true },
   keywords: [{ type: String }],
@@ -16,36 +22,11 @@ var Micro_Schema = new Schema({
   code_snippet: { type: String },
   tech_stack: [{ type: String }],
 });
+
+//Micro object  will be used for exporting Micro_Schema, see the end of this file.
 const Micro = mongoose.model("Micro_Schema", Micro_Schema);
 
-// var Micro_Frontend_Schema = new Schema({
-//   title: { type: String, required: true, unique: true },
-//   keywords: [{ type: String }],
-//   desc: { type: String, required: true },
-//   rating: { type: Number },
-//   //developers: [User_Schema],  We will think about this later
-//   documentation: { type: String },
-//   code_snippet: { type: String },
-//   tech_stack: [{ type: String }],
-//   mf_image: { type: String } //For now just link in form of a string
-// });
-// const Micro_Frontend = mongoose.model(
-//   "Micro_Frontend_Schema",
-//   Micro_Frontend_Schema
-// );
-//
-//
-// var Global_Request_Schema = new Schema({
-//   Id: {type: Number, required: true, unique: true },
-//   title: { type: String },
-//   text: { type: String },
-//   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },  //will be added after user is implemented
-// });
-// const Global_Request = mongoose.model(
-//   "Global_Request_Schema",
-//   Global_Request_Schema
-// );
-
+// Another Schema in the same file, you can have them in separate files as well.
 var Individual_Request_Schema_MS = new Schema({
   title: { type: String,required:true,unique:true },
   desc: { type: String ,required:true},
@@ -57,16 +38,7 @@ const Individual_Request = mongoose.model(
   Individual_Request_Schema_MS
 );
 
-// var User_Story_Schema = new Schema({
-//   desc: { type: String, required: true, unique: true },
-//   priority: { type: Number, required: true, unique: false },
-//   status: { type: String, required: true, unique: false },
-//   onwer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: false },
-//   links_to_ms: [Micro_Schema],
-//   links_to_mf: [Micro_Frontend_Schema]
-// });
-// const User_Story = mongoose.model("User_Story_Schema", User_Story_Schema);
-
+// Another Schema
 var User_Schema = new Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: false, unique: false },
@@ -74,19 +46,19 @@ var User_Schema = new Schema({
   email:{type:String,required:false,unique:false},
   bookmarks_ms: [Micro_Schema],
   bookmarks_mf: [Micro_Frontend_Schema]
-  //we will think about teams later
-  //not adding role currently because role is depenedent on team
+
 });
+
+// Used for authentication of User_Schema.
 User_Schema.plugin(passportLocalMongoose);
+
 const User = mongoose.model("User_Schema", User_Schema);
 
+// Below code used for exporting the Schemas
+// Used when we need to import the below Schemas in another file.
 module.exports = {
   Micro_Schema: Micro,
   User_Schema: User,
-  // User_Story_Schema: User_Story,
-  // Micro_Frontend_Schema: Micro_Frontend,
-  // Global_Request_Schema:Global_Request,
   Individual_Request_Schema_MS:Individual_Request
 };
-//I have changed the module exports structure
-//so you have to change the import at places where it is used
+
